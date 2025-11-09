@@ -16,23 +16,17 @@ export enum ROLE {
 
 @Entity({ name: 'users' })
 export class UserEntity {
-    @PrimaryColumn({type:'varchar',length:255})
+    @Column({type:'varchar',length:255, nullable: true, default: ''})
     registration_number: string;
 
-    @Column()
-    username: string;
-
-    @Column()
+    @PrimaryColumn({type:'varchar'})
     email: string;
 
     @Column()
     @Exclude()
-    password: string;
+    password: string
 
-    @Column()
-    batch: number;
-
-    @Column({ type: 'array', default: '' }) 
+    @Column("text", { array: true, default: '{}' })
     in_clubs: string[]; 
 
     @Column()
@@ -41,9 +35,6 @@ export class UserEntity {
     @Column()
     first_name: string;
 
-    @Column({ nullable: true })
-    middle_name: string;
-
     @Column()
     last_name: string;
 
@@ -51,15 +42,12 @@ export class UserEntity {
     looking_for_club: boolean;
 
     @Column({ type: 'enum', enum: ROLE, default: ROLE.USER })
-    role: ROLE;
+    role: ROLE
 
-    @Column({type:'array',default:[]})
-    applications:Array<string>
-
-    @Column({ default: 'None' })
+    @Column({ nullable: true })
     club_name: string;
 
-    @Column({default: 'None'})
+    @Column({ nullable:true })
     club: string
 
     @Column({type:'enum', enum:CLUB_ROLE, default:CLUB_ROLE.NONE})
@@ -68,4 +56,9 @@ export class UserEntity {
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     @Exclude()
     created_at: Date;
+
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @Exclude()
+    updated_at: Date;
 }

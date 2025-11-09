@@ -13,6 +13,19 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI
   })
-  await app.listen(process.env.PORT ?? 3000);
+  app.enableCors({
+    origin: '*', 
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Accept',
+      'Origin',
+      'X-Requested-With',
+      'Access-Control-Allow-Headers',
+    ], 
+  });
+  await app.listen(process.env.PORT ?? 5000);
 }
 bootstrap();

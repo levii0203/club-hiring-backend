@@ -36,10 +36,11 @@ export class RedisService {
         try {
             const counter = await this.rdb.get(regNo)
             if(!counter){
-                await this.rdb.set(regNo,1,'EX',3600)
+                await this.rdb.set(regNo,1,'EX',10)
             }
             else {
                 await this.rdb.incr(regNo)
+                await this.rdb.expire(regNo, 10); 
             }
         }
         catch(error){

@@ -17,15 +17,11 @@ export class UserSignUpDto {
     @IsNotEmpty()
     phone_number: string;
 
-    @IsString()
-    @IsNotEmpty()
-    username: string;
-
     @IsBoolean()
     looking_for_club: boolean;
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     registration_number: string;
 
     @IsString()
@@ -33,23 +29,10 @@ export class UserSignUpDto {
     first_name: string;
 
     @IsString()
-    @IsOptional()
-    middle_name?: string;
-
-    @IsString()
     @IsNotEmpty()
     last_name: string;
-
-    @IsNumber()
-    @IsNotEmpty()
-    @Type(() => Number) 
-    batch: number;
 
     @IsEnum(ROLE)
     @IsOptional()
     role?: ROLE; 
-
-    @IsString()
-    @IsOptional()
-    club_name?: string; 
 }

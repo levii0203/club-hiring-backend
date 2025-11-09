@@ -30,13 +30,18 @@ export class UserService {
         return this.userRepository.save(adminDto)
     }
 
-    async getUserPrimaryDataByRegistrationNumber(registration_number:string):Promise<UserEntity|null> {
-        const user = await this.userRepository.findOne({where:{registration_number},select:['email','password','registration_number','role']})
+    async checkUser(email: string) {
+        const exists = await this.userRepository.findOne({where:{ email }})
+        return exists
+    }
+
+    async getUserByEmailAndPassword(email:string, password: string) {
+        const user = await this.userRepository.findOne({where:{ email, password }})
         return user
     }
 
-    async getUserByRegistrationNumber(registration_number:string):Promise<UserEntity|null> {
-        const user = await this.userRepository.findOne({where:{registration_number}})
+    async getUserByEmail(email:string):Promise<UserEntity|null> {
+        const user = await this.userRepository.findOne({where:{ email }})
         return user
     }
 
@@ -45,11 +50,11 @@ export class UserService {
         return user
     }
 
-    async addClubToUser(club_id:string, registration_number:string):Promise<any> {
+    async addClubToUser(club_id:string, email:string):Promise<any> {
         return await this.userRepository.createQueryBuilder().update('users').set({
             in_clubs: () => `array_append(array_remove("in_clubs", :club_id), :club_id)`
         })
-        .where("registration_number = :registration_number",{registration_number,club_id}).execute()
+        .where("email = :email",{email,club_id}).execute()
     }
 
     async updateUserPassword(registration_number:string, new_password:string):Promise<any> {
@@ -61,5 +66,4 @@ export class UserService {
     async getUserRoleInClub(registration_number:string, club:string):Promise<any> {
         return await this.userRepository.findOne({where:{registration_number,club},select:['email','role','phone_number','registration_number']})
     }
-
 }

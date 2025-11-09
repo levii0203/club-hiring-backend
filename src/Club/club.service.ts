@@ -19,19 +19,7 @@ export class ClubService {
     async getClubByName(club_name:string):Promise<ClubEntity|null>{
         return await this.clubRepository.findOne({where:{club_name}})
     }
-
-    async getClubAdmins(id:string):Promise<any>{
-        return await this.clubRepository.findOne({where:{id},select:['club_admins']})
-    }
-
-    async getClubPresident(id:string):Promise<any> {
-        return await this.clubRepository.findOne({where:{id},select:['club_president']})
-    }
-
-    async getClubWebsites(id:string):Promise<any> {
-        return await this.clubRepository.findOne({where:{id},select:['official_website_url','other_websites']})
-    }
-
+    
     async saveClub(clubDto:ClubRegisterDto):Promise<any> {
         return await this.clubRepository.save(clubDto)
     }
@@ -46,5 +34,13 @@ export class ClubService {
         .set({hired_this_month: ()=>"hired_this_month + 1"}).where({id:id}).execute()
     }
 
+    async updateRegistrationDeadline(id:string, registration_deadline:string):Promise<any> {
+        return await this,this.clubRepository.createQueryBuilder().update('clubs')
+        .set({registration_deadline:registration_deadline}).where({id}).execute()
+    }
 
+    async updateRegistrationGoogleFormLink(id:string, registration_google_form_link:string):Promise<any> {
+        return await this.clubRepository.createQueryBuilder().update('clubs')
+        .set({registration_google_form_link:registration_google_form_link}).where({id}).execute()
+    }
 }
